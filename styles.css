@@ -1,0 +1,123 @@
+:root {
+  --p1: #F0A2BC;
+  --p2: #F38FB3;
+  --p3: #FA7BA8;
+  --bg: #FDF2F6;
+  --bear-base: #D5A36A;
+  --bear-stroke: #7A4C39;
+  --bear-inner: #A46E4F;
+  --bear-cheek: #F4C77E;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: radial-gradient(1200px circle at 50% -10%, var(--bg), var(--p1));
+  color: var(--bear-stroke);
+  font-family: ui-rounded, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Helvetica, Arial;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding: 3rem 1.25rem;
+}
+
+#question {
+  text-align: center;
+  font-size: clamp(1.6rem, 4vw, 2.6rem);
+  line-height: 1.2;
+  letter-spacing: 0.5px;
+  color: var(--p3);
+}
+
+.avatar { width: min(88vw, 360px); position: relative; }
+.avatar.image-missing { background: var(--bg); border-radius: 24px; min-height: 260px; display: grid; place-items: center; }
+.avatar.image-missing::after { content: "GIF not found. Place assets/bear.gif"; color: var(--p2); font-size: 0.95rem; }
+.bear-img { width: 100%; height: auto; border-radius: 24px; box-shadow: 0 10px 20px rgba(122, 76, 57, 0.18); object-fit: contain; background: var(--bg); }
+.tears-overlay { position: absolute; inset: 0; display: none; }
+.avatar.sad .tears-overlay { display: block; }
+.tear { position: absolute; width: 14px; height: 22px; background: var(--p2); border-radius: 10px 10px 12px 12px; transform: rotate(12deg); animation: tear-drop 1.6s ease-in infinite; opacity: 0.85; }
+.tear.left { left: 42%; top: 46%; }
+.tear.right { left: 56%; top: 46%; animation-delay: .25s; }
+
+@keyframes tear-drop {
+  0% { transform: translateY(0) scale(1); opacity: 1; }
+  80% { transform: translateY(20px) scale(0.9); opacity: 0.6; }
+  100% { transform: translateY(32px) scale(0.75); opacity: 0; }
+}
+
+.controls {
+  position: relative;
+  width: min(92vw, 520px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  min-height: 64px;
+}
+
+.btn {
+  appearance: none;
+  border: none;
+  border-radius: 999px;
+  padding: 0.9rem 1.4rem;
+  font-size: clamp(1rem, 3.2vw, 1.25rem);
+  cursor: pointer;
+  transition: transform .25s ease, filter .25s ease, background-color .25s ease, left .25s ease, top .25s ease;
+  box-shadow: 0 4px 0 0 var(--p3);
+}
+.btn:active { transform: translateY(2px) scale(0.98); box-shadow: 0 2px 0 0 var(--p3); }
+
+.btn.yes { background: var(--p3); color: var(--bg); }
+.btn.no { background: var(--p2); color: var(--bg); position: absolute; top: 0; left: 60%; }
+.btn:hover { filter: brightness(1.05); transform: translateY(-2px); }
+
+#effects { position: fixed; inset: 0; pointer-events: none; }
+.heart {
+  position: absolute;
+  width: 18px; height: 18px;
+  background: var(--p3);
+  transform: rotate(45deg);
+  animation: float-heart 2.6s ease-in forwards;
+}
+.heart::before, .heart::after {
+  content: "";
+  position: absolute; width: 18px; height: 18px;
+  background: inherit;
+  border-radius: 50%;
+}
+.heart::before { top: -9px; left: 0; }
+.heart::after { left: -9px; top: 0; }
+
+@keyframes float-heart {
+  0% { transform: translateY(0) rotate(45deg) scale(0.7); opacity: 0.9; }
+  50% { transform: translateY(-40px) rotate(45deg) scale(1.1); opacity: 1; }
+  100% { transform: translateY(-90px) rotate(45deg) scale(0.8); opacity: 0; }
+}
+
+.avatar.happy .bear-img { animation: happy-bounce 1.2s ease-in-out; filter: drop-shadow(0 0 8px var(--p2)) saturate(1.1); }
+.avatar.sad .bear-img { filter: saturate(0.9); }
+
+@keyframes happy-bounce {
+  0% { transform: translateY(0); }
+  30% { transform: translateY(-6px); }
+  60% { transform: translateY(0); }
+  100% { transform: translateY(-3px); }
+}
+
+@media (max-width: 420px) {
+  .controls { gap: 0.6rem; min-height: 56px; }
+  .btn { padding: 0.8rem 1.2rem; }
+}
+
+/* Fine-tuned scaling for desktop and mobile */
+@media (min-width: 900px) {
+  .avatar { width: 380px; }
+  #question { font-size: 2.4rem; }
+}
